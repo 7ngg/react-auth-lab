@@ -14,7 +14,7 @@ const Navbar = (props: any) => {
       <a
         key={0}
         className="h-full flex items-center px-2 cursor-pointer hover:underline hover:bg-black hover:text-white"
-        onClick={() => navigateTo(`${i.name.toLocaleLowerCase()}`)}
+        onClick={() => navigateTo('/')}
       >
         Home
       </a>

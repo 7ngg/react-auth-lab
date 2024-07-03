@@ -1,17 +1,17 @@
 import React from "react";
 import Navbar from "./navbar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function Home() {
-  const location = useLocation();
-
   return (
     <div>
       <header>
         <Navbar />
       </header>
-      <main>
-        <Outlet />
+      <main className="pt-10">
+        <div className="flex flex-col items-center">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

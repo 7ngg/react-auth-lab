@@ -1,13 +1,16 @@
 import { FormEvent, useRef } from "react";
+import { NavigationType, Outlet, useNavigate } from "react-router-dom";
 import AuthHelper from "../services/auth";
 import Input from "./Input";
 
 function SignUp() {
+  const navigateTo = useNavigate();
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     const as = new AuthHelper();
     event.preventDefault();
 
@@ -16,32 +19,38 @@ function SignUp() {
     const confirm = confirmRef.current?.value;
 
     if (username && password && confirm && password === confirm) {
-      as.SignUp(username, password);
+      try {
+        const response = await as.Authenticate(username, password);
+        localStorage.setItem("authResponse", JSON.stringify(response?.data));
+        navigateTo("/Success");
+      } catch (e) {
+        console.log(e);
+      }
     } else {
-      console.log("Passwords do not match");
+      alert("Passwords do not match");
     }
   };
 
   return (
-    <div className="flex flex-col shadow-md w-[400px] h-[500px] rounded-md items-center justify-center">
+    <div className="flex flex-col shadow w-[400px] h-[500px] rounded-md items-center justify-center">
       <h1 className="text-2xl">Sign Up</h1>
-      <form method="POST" onSubmit={handleSubmit} className="w-full p-5">
+      <form method="POST" onSubmit={submitHandler} className="w-full p-5">
         <Input
           inputRef={usernameRef}
-          type="username"
-          placeholder="Username"
+          type="text"
+          placeholder="emilys"
           text="Username"
         />
         <Input
           inputRef={passwordRef}
           type="password"
-          placeholder="Password"
+          placeholder="emilyspass"
           text="Password"
         />
         <Input
           inputRef={confirmRef}
           type="password"
-          placeholder="Confirm password"
+          placeholder="emilyspass"
           text="Confirm password"
         />
 
